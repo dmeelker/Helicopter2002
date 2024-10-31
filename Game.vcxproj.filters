@@ -25,6 +25,10 @@
     <ClCompile Include="src\Vector.c" />
     <ClCompile Include="src\Rect.c" />
     <ClCompile Include="src\Cave.c" />
+    <ClCompile Include="src\Lerp.c" />
+    <ClCompile Include="src\Game.c" />
+    <ClCompile Include="src\Screens.c" />
+    <ClCompile Include="src\MenuScreen.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Vector.h" />
@@ -33,5 +37,8 @@
     <ClInclude Include="src\Cave.h" />
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Lerp.h" />
+    <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\Screens.h" />
+    <ClInclude Include="src\MenuScreen.h" />
   </ItemGroup>
 </Project>

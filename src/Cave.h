@@ -4,7 +4,8 @@
 #include "Constants.h"
 #include "Rect.h"
 
-#define MAX_BLOCKS 1000
+
+#define BLOCK_WIDTH 50
 
 typedef struct Block {
 	bool used;
@@ -12,8 +13,9 @@ typedef struct Block {
 } Block;
 
 void levelRender();
-void levelClear();
-void levelGeneratePath();
+void levelReset();
+//void levelGeneratePath();
 bool levelCollides(Rect rect);
+void levelUpdate(int xOffset);
 
 #endif
