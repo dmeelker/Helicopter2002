@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="vcpkg_installed">
+      <UniqueIdentifier>{5FEBD812-CB76-46D7-D487-C9CB4092A2D7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vcpkg_installed\x64-windows">
+      <UniqueIdentifier>{E8364C19-5444-7AFF-DD2A-76EA493746B6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vcpkg_installed\x64-windows\include">
+      <UniqueIdentifier>{5BC67570-C77F-E01A-50DF-FAF4BC97968A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vcpkg_installed\x64-windows\include\GLFW">
+      <UniqueIdentifier>{7AB2C1B6-662F-B5F9-8FAC-B50D7B88518D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vcpkg_installed\x64-windows\include\mmx">
+      <UniqueIdentifier>{DC1F73A8-48AF-3493-51AB-15ABBDB96F9F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="vcpkg_installed\x64-windows\include\nanosvg">
+      <UniqueIdentifier>{E6E4FD1A-524A-91A1-DB22-337A47878610}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\main.c" />
+    <ClCompile Include="src\Vector.c" />
+    <ClCompile Include="src\Rect.c" />
+    <ClCompile Include="src\Cave.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Vector.h" />
+    <ClInclude Include="src\Player.h" />
+    <ClInclude Include="src\Rect.h" />
+    <ClInclude Include="src\Cave.h" />
+    <ClInclude Include="src\Constants.h" />
+    <ClInclude Include="src\Lerp.h" />
+  </ItemGroup>
+</Project>
