@@ -2,6 +2,7 @@
 #include "Constants.h"
 #include "Game.h"
 #include "Lerp.h"
+#include "Particles.h"
 #include "Player.h"
 #include "Textures.h"
 #include "Vector.h"
@@ -48,6 +49,7 @@ static void resetGame()
 	crashed = false;
 	score = 0;
 	levelReset();
+	particlesReset();
 
 	player = (Player){ { 300, CENTER(SCREEN_HEIGHT, playerSize.height)}, {0, 0} };
 	updateCameraLocation();
@@ -66,6 +68,12 @@ void gameInitialize()
 	camera.rotation = 0.0f;
 
 	resetGame();
+}
+
+static void updateSmoke(Particle* particle, float age)
+{
+	particle->zoom = lerp(age, 0.5f, 2.0f);
+	particle->alpha = lerp(age, 1.0f, 0.0f);
 }
 
 void gameUpdate(float frameTime)
@@ -108,8 +116,11 @@ void gameUpdate(float frameTime)
 		player.speed = vectorAdd(player.speed, vectorMultiply(liftSpeed, frameTime));
 	}
 
+	particleCreate(player.position, (Vector) { 0, -5 }, (Vector) { 0, 0 }, 1000, & updateSmoke);
+
 	clampVelocity(&player.speed);
 	levelUpdate(xOffset);
+	particlesUpdate(frameTime);
 
 	score = getScore();
 }
@@ -132,6 +143,7 @@ void gameRender()
 	levelRender();
 
 	renderHelicopter();
+	particlesRender();
 
 
 	EndMode2D();

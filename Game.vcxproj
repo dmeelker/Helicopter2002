@@ -105,6 +105,7 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Lerp.h" />
     <ClInclude Include="src\MenuScreen.h" />
+    <ClInclude Include="src\Particles.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\Screens.h" />
@@ -116,6 +117,7 @@
     <ClCompile Include="src\Game.c" />
     <ClCompile Include="src\Lerp.c" />
     <ClCompile Include="src\MenuScreen.c" />
+    <ClCompile Include="src\Particles.c" />
     <ClCompile Include="src\Rect.c" />
     <ClCompile Include="src\Screens.c" />
     <ClCompile Include="src\Textures.c" />
