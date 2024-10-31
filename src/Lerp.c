@@ -1,4 +1,5 @@
 #include "Lerp.h"
+#include <stdlib.h>
 
 float lerp(float value, float min, float max)
 {

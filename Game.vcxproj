@@ -108,6 +108,7 @@
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\Screens.h" />
+    <ClInclude Include="src\Textures.h" />
     <ClInclude Include="src\Vector.h" />
   </ItemGroup>
   <ItemGroup>
@@ -117,6 +118,7 @@
     <ClCompile Include="src\MenuScreen.c" />
     <ClCompile Include="src\Rect.c" />
     <ClCompile Include="src\Screens.c" />
+    <ClCompile Include="src\Textures.c" />
     <ClCompile Include="src\Vector.c" />
     <ClCompile Include="src\main.c" />
   </ItemGroup>

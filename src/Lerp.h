@@ -1,7 +1,7 @@
 #ifndef LERP_H
 #define LERP_H
 
-#include <stdlib.h>
+#define CENTER(outer, inner) (((outer) / 2) - ((inner) / 2))
 
 typedef struct Size {
 	int width;

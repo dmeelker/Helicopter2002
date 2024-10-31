@@ -1,13 +1,14 @@
 #include "Cave.h"
+#include "Constants.h"
 #include "Lerp.h"
 #include <assert.h>
 #include <raylib.h>
-#include <stdio.h>
 #include <stdlib.h>
 
 #define MAX_BLOCKS 128
 #define OBSTACLE_HEIGHT 150
 #define MIN_GAP_SIZE 120
+#define BLOCK_WIDTH 50
 
 typedef struct CaveOpening {
 	int x;
@@ -37,11 +38,35 @@ static Block* allocateBlock(Rect rect)
 
 void levelRender()
 {
+	// Draw shadows
 	for (int i = 0; i < MAX_BLOCKS; i++)
 	{
 		if (blocks[i].used)
 		{
-			DrawRectangle(blocks[i].rect.x, blocks[i].rect.y, blocks[i].rect.width, blocks[i].rect.height, BLUE);
+			if (blocks[i].rect.y == 0)
+			{
+				// Top block
+				DrawRectangle(blocks[i].rect.x, blocks[i].rect.y + 4, blocks[i].rect.width, blocks[i].rect.height, (Color) { 0, 0, 0, 100 });
+			}
+			else if (blocks[i].rect.y + blocks[i].rect.height >= SCREEN_HEIGHT)
+			{
+				// Bottom block
+				DrawRectangle(blocks[i].rect.x, blocks[i].rect.y - 4, blocks[i].rect.width, blocks[i].rect.height, (Color) { 0, 0, 0, 100 });
+			}
+			else
+			{
+				// Floating block
+				DrawRectangle(blocks[i].rect.x + 4, blocks[i].rect.y + 4, blocks[i].rect.width, blocks[i].rect.height, (Color) { 0, 0, 0, 100 });
+			}
+		}
+	}
+
+	// Draw blocks
+	for (int i = 0; i < MAX_BLOCKS; i++)
+	{
+		if (blocks[i].used)
+		{
+			DrawRectangle(blocks[i].rect.x, blocks[i].rect.y, blocks[i].rect.width, blocks[i].rect.height, (Color) { 65, 146, 195, 255 });
 		}
 	}
 }
@@ -129,7 +154,7 @@ void levelReset()
 	}
 
 	previousOpening = (CaveOpening){ 0, (SCREEN_HEIGHT / 2) - 250, 500 };
-	nextOpening = (CaveOpening){ SCREEN_WIDTH, (SCREEN_HEIGHT / 2) - 250, 500 };
+	nextOpening = (CaveOpening){ SCREEN_WIDTH + BLOCK_WIDTH, (SCREEN_HEIGHT / 2) - 250, 500 };
 	lastObstacleX = SCREEN_WIDTH;
 
 	generateBlocksToNextOpening();

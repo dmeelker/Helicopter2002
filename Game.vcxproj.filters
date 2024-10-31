@@ -29,6 +29,7 @@
     <ClCompile Include="src\Game.c" />
     <ClCompile Include="src\Screens.c" />
     <ClCompile Include="src\MenuScreen.c" />
+    <ClCompile Include="src\Textures.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Vector.h" />
@@ -40,5 +41,6 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Screens.h" />
     <ClInclude Include="src\MenuScreen.h" />
+    <ClInclude Include="src\Textures.h" />
   </ItemGroup>
 </Project>

@@ -1,14 +1,16 @@
 #include "Cave.h"
+#include "Constants.h"
 #include "Game.h"
 #include "Lerp.h"
 #include "Player.h"
+#include "Textures.h"
 #include "Vector.h"
 #include <raylib.h>
 #include <stdio.h>
 
 #define MAX_SPEED 8
 
-const Size playerSize = { 70, 50 };
+const Size playerSize = { 70, 35 };
 const Vector gravity = { 0, 20.0f };
 const Vector liftSpeed = { 0, -42.0f };
 
@@ -44,9 +46,10 @@ static void resetGame()
 {
 	started = false;
 	crashed = false;
+	score = 0;
 	levelReset();
 
-	player = (Player){ { 300, (SCREEN_HEIGHT / 2) - (playerSize.height / 2)}, {0, 0} };
+	player = (Player){ { 300, CENTER(SCREEN_HEIGHT, playerSize.height)}, {0, 0} };
 	updateCameraLocation();
 }
 
@@ -76,6 +79,15 @@ void gameUpdate(float frameTime)
 		return;
 	}
 
+	if (crashed)
+	{
+		if (GetTime() - crashTime > 2)
+		{
+			resetGame();
+		}
+		return;
+	}
+
 	player.position = vectorAdd(player.position, player.speed);
 	player.position.x += frameTime * 300.0; // 100.0
 
@@ -91,37 +103,37 @@ void gameUpdate(float frameTime)
 
 	player.speed = vectorAdd(player.speed, vectorMultiply(gravity, frameTime));
 
-	if (crashed)
+	if (IsMouseButtonDown(0))
 	{
-		if (GetTime() - crashTime > 2)
-		{
-			resetGame();
-		}
-	}
-	else
-	{
-		score = getScore();
-		if (IsMouseButtonDown(0))
-		{
-			player.speed = vectorAdd(player.speed, vectorMultiply(liftSpeed, frameTime));
-		}
+		player.speed = vectorAdd(player.speed, vectorMultiply(liftSpeed, frameTime));
 	}
 
 	clampVelocity(&player.speed);
-
 	levelUpdate(xOffset);
+
+	score = getScore();
+}
+
+static void renderHelicopter()
+{
+	int offset = ((int)(GetTime() * 1000.0f) / 50) % 3;
+	Rectangle source = { offset * playerSize.width, 0, playerSize.width, playerSize.height };
+	Rectangle target = { (int)player.position.x, (int)player.position.y, playerSize.width, playerSize.height };
+	DrawTexturePro(textures.helicopter, source, target, (Vector2) { 0, 0 }, 0.0f, WHITE);
 }
 
 void gameRender()
 {
 	BeginDrawing();
 
-	ClearBackground(RAYWHITE);
+	ClearBackground((Color) { 48, 81, 130, 255 });
 
 	BeginMode2D(camera);
 	levelRender();
 
-	DrawRectangle(player.position.x, player.position.y, playerSize.width, playerSize.height, RED);
+	renderHelicopter();
+
+
 	EndMode2D();
 
 	char buffer[100];

@@ -7,6 +7,8 @@ int main(void)
 	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Elicopter");
 	SetTargetFPS(60);
 
+	texturesLoad();
+
 	screenSwitch(SCREEN_MENU);
 
 	while (!WindowShouldClose())
