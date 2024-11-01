@@ -5,6 +5,7 @@
 #include "Particles.h"
 #include "Player.h"
 #include "Textures.h"
+#include "utils/Timer.h"
 #include "Vector.h"
 #include <raylib.h>
 #include <stdio.h>
@@ -16,6 +17,7 @@ const Vector gravity = { 0, 20.0f };
 const Vector liftSpeed = { 0, -42.0f };
 
 Player player = { .position = { 600, 300 }, .speed = { 0, 0 } };
+bool accelerating = false;
 
 Camera2D camera;
 
@@ -24,6 +26,8 @@ bool crashed = false;
 float crashTime = 0.0f;
 int score = 0;
 int xOffset = 0;
+
+Timer smokeTimer;
 
 static void clampVelocity(Vector* speed)
 {
@@ -46,8 +50,10 @@ static void updateCameraLocation()
 static void resetGame()
 {
 	started = false;
+	accelerating = false;
 	crashed = false;
 	score = 0;
+	smokeTimer = timerCreate(0.1f);
 	levelReset();
 	particlesReset();
 
@@ -114,9 +120,17 @@ void gameUpdate(float frameTime)
 	if (IsMouseButtonDown(0))
 	{
 		player.speed = vectorAdd(player.speed, vectorMultiply(liftSpeed, frameTime));
+		accelerating = true;
+	}
+	else
+	{
+		accelerating = false;
 	}
 
-	particleCreate(player.position, (Vector) { 0, -5 }, (Vector) { 0, 0 }, 1000, & updateSmoke);
+	if (timerUpdate(&smokeTimer))
+	{
+		particleCreate(vectorAdd(player.position, (Vector) { 0, 10 }), (Vector) { 0, -5 }, (Vector) { 0, 0 }, 1000, & updateSmoke);
+	}
 
 	clampVelocity(&player.speed);
 	levelUpdate(xOffset);
@@ -129,8 +143,19 @@ static void renderHelicopter()
 {
 	int offset = ((int)(GetTime() * 1000.0f) / 50) % 3;
 	Rectangle source = { offset * playerSize.width, 0, playerSize.width, playerSize.height };
-	Rectangle target = { (int)player.position.x, (int)player.position.y, playerSize.width, playerSize.height };
-	DrawTexturePro(textures.helicopter, source, target, (Vector2) { 0, 0 }, 0.0f, WHITE);
+	Rectangle target = { (int)player.position.x , (int)player.position.y , playerSize.width, playerSize.height };
+
+	float rotation = accelerating ? 5.f : 0.f;
+
+	//DrawRectangle((int)target.x, (int)target.y, target.width, target.height, RED);
+
+	target.x += (playerSize.width / 2);
+	target.y += (playerSize.height / 2);
+
+	DrawTexturePro(textures.helicopter, source, target, (Vector2)
+	{
+		(playerSize.width / 2), (playerSize.height / 2)
+	}, rotation, WHITE);
 }
 
 void gameRender()
