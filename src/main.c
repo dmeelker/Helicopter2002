@@ -5,7 +5,7 @@
 
 int main(void)
 {
-	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Elicopter");
+	InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Helicopter 2002");
 	SetTargetFPS(60);
 
 	texturesLoad();

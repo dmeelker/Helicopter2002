@@ -26,10 +26,12 @@ typedef struct TextAnimation {
 
 extern TextStyle TEXT_ORANGE_MEDIUM;
 extern TextStyle TEXT_ORANGE_SMALL;
+extern TextStyle TEXT_ORANGE_LARGE;
+extern TextStyle TEXT_YELLOW_SMALL;
 extern TextStyle TEXT_YELLOW_MEDIUM;
 extern TextStyle TEXT_YELLOW_LARGE;
 
-void renderText(const char* text, Vector2 position);
+void renderText(TextStyle* style, const char* text, Vector2 location);
 void renderTextCentered(TextStyle* style, const char* text, Vector2 center);
 void renderTextCenteredWiggle(TextStyle* style, const char* text, Vector2 center);
 

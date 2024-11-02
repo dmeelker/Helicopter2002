@@ -4,6 +4,7 @@
 #include <raylib.h>
 
 typedef struct Textures {
+	Texture2D titleScreen;
 	Texture2D helicopter;
 	Texture2D smoke;
 } Textures;

@@ -88,7 +88,7 @@ void gameInitialize()
 	camera.zoom = 1.0f;
 	camera.rotation = 0.0f;
 
-	highscore = 0; // loadHighscore();
+	highscore = loadHighscore();
 	resetGame();
 }
 
@@ -275,31 +275,39 @@ void gameRender()
 
 int loadHighscore()
 {
-	FILE* file = fopen("highscore.txt", "r");
+	FILE* file = fopen("data.dat", "rb");
 	if (file == NULL)
 	{
 		// If the file doesn't exist or can't be opened, return 0 as the default high score
 		return 0;
 	}
 
-	int highscore = 0;
-	fscanf(file, "%d", &highscore);
+	unsigned char buffer[4];
+	size_t read = fread(buffer, sizeof(buffer), 1, file);
+
+	if (read == 0)
+	{
+		fclose(file);
+		return 0;
+	}
+
+	int* highscore = (int*)buffer;
 	fclose(file);
 
-	return highscore;
+	return *highscore;
 }
 
 
 void saveHighscore(int score)
 {
-	FILE* file = fopen("highscore.txt", "w");
+	FILE* file = fopen("data.dat", "wb");
 	if (file == NULL)
 	{
 		printf("Failed to save highscore\n");
 		return;
 	}
 
-	fprintf(file, "%d", score);
+	unsigned char* buffer = (unsigned char*)&score;
+	fwrite(buffer, sizeof(int), 1, file);
 	fclose(file);
-
 }

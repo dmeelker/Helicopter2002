@@ -1,6 +1,8 @@
 #include "Constants.h"
 #include "MenuScreen.h"
 #include "Screens.h"
+#include "Text.h"
+#include "Textures.h"
 #include <raylib.h>
 
 void menuUpdate(float frameTime)
@@ -14,17 +16,16 @@ void menuUpdate(float frameTime)
 void menuRender()
 {
 	BeginDrawing();
+	DrawTexture(textures.titleScreen, 0, 0, WHITE);
 
-	ClearBackground(RAYWHITE);
-
-	int width = MeasureText("Elicopter", 80);
-	DrawText("Elicopter", SCREEN_WIDTH / 2 - width / 2, SCREEN_HEIGHT / 2 - 80, 80, BLACK);
+	renderTextCentered(&TEXT_ORANGE_LARGE, "Helicopter 2002", (Vector2) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 });
 
 	if ((int)(GetTime() * 1000.0f) % 2000 > 1000)
 	{
-		int subWidth = MeasureText("Click to play", 40);
-		DrawText("Click to play", SCREEN_WIDTH / 2 - subWidth / 2, SCREEN_HEIGHT / 2, 40, BLACK);
+		renderTextCentered(&TEXT_ORANGE_MEDIUM, "Click to play", (Vector2) { SCREEN_WIDTH / 2, (SCREEN_HEIGHT / 2) + 50 });
 	}
+
+	renderText(&TEXT_ORANGE_SMALL, "A DENSPEL GAME", (Vector2) { SCREEN_WIDTH - 230, 10 });
 
 	EndDrawing();
 }

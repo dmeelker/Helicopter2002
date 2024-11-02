@@ -9,13 +9,15 @@
 
 TextStyle TEXT_ORANGE_SMALL = { 12 * 2, 2, 1, TEXT_DARK_ORANGE };
 TextStyle TEXT_ORANGE_MEDIUM = { 12 * 4, 3, 3, TEXT_ORANGE };
+TextStyle TEXT_ORANGE_LARGE = { 12 * 6, 3, 4, TEXT_ORANGE };
+TextStyle TEXT_YELLOW_SMALL = { 12 * 2, 3, 3, TEXT_YELLOW };
 TextStyle TEXT_YELLOW_MEDIUM = { 12 * 4, 3, 3, TEXT_YELLOW };
 TextStyle TEXT_YELLOW_LARGE = { 12 * 6, 3, 4, TEXT_YELLOW };
 
-void renderText(const char* text, Vector2 position)
+void renderText(TextStyle* style, const char* text, Vector2 location)
 {
-	DrawTextEx(fonts.large, text, (Vector2) { position.x + 2, position.y + 2 }, 30, 4, (Color) { 121, 56, 0, 255 });
-	DrawTextEx(fonts.large, text, position, 30, 4, (Color) { 255, 162, 0, 255 });
+	DrawTextEx(fonts.large, text, (Vector2) { location.x + style->shadowOffset, location.y + style->shadowOffset }, style->size, style->spacing, style->colors.shadow);
+	DrawTextEx(fonts.large, text, location, style->size, style->spacing, style->colors.text);
 }
 
 void renderTextCentered(TextStyle* style, const char* text, Vector2 center)
