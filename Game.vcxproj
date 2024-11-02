@@ -100,6 +100,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\assets\Fonts.h" />
     <ClInclude Include="src\Cave.h" />
     <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\Game.h" />
@@ -109,11 +110,13 @@
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\Screens.h" />
+    <ClInclude Include="src\Text.h" />
     <ClInclude Include="src\Textures.h" />
     <ClInclude Include="src\utils\Timer.h" />
     <ClInclude Include="src\Vector.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\assets\Fonts.c" />
     <ClCompile Include="src\Cave.c" />
     <ClCompile Include="src\Game.c" />
     <ClCompile Include="src\Lerp.c" />
@@ -121,6 +124,7 @@
     <ClCompile Include="src\Particles.c" />
     <ClCompile Include="src\Rect.c" />
     <ClCompile Include="src\Screens.c" />
+    <ClCompile Include="src\Text.c" />
     <ClCompile Include="src\Textures.c" />
     <ClCompile Include="src\utils\Timer.c" />
     <ClCompile Include="src\Vector.c" />

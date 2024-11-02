@@ -1,3 +1,4 @@
+#include "assets/Fonts.h"
 #include "Constants.h"
 #include "Screens.h"
 #include <raylib.h>
@@ -8,6 +9,7 @@ int main(void)
 	SetTargetFPS(60);
 
 	texturesLoad();
+	fontsLoad();
 
 	screenSwitch(SCREEN_MENU);
 

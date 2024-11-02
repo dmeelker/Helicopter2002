@@ -32,6 +32,8 @@
     <ClCompile Include="src\Textures.c" />
     <ClCompile Include="src\Particles.c" />
     <ClCompile Include="src\utils\Timer.c" />
+    <ClCompile Include="src\assets\Fonts.c" />
+    <ClCompile Include="src\Text.c" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Vector.h" />
@@ -46,5 +48,7 @@
     <ClInclude Include="src\Textures.h" />
     <ClInclude Include="src\Particles.h" />
     <ClInclude Include="src\utils\Timer.h" />
+    <ClInclude Include="src\assets\Fonts.h" />
+    <ClInclude Include="src\Text.h" />
   </ItemGroup>
 </Project>

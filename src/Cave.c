@@ -38,6 +38,9 @@ static Block* allocateBlock(Rect rect)
 
 void levelRender()
 {
+	static Color shadowColor = { 0, 0, 0, 80 };
+	const int shadowOffset = 5;
+
 	// Draw shadows
 	for (int i = 0; i < MAX_BLOCKS; i++)
 	{
@@ -46,17 +49,17 @@ void levelRender()
 			if (blocks[i].rect.y == 0)
 			{
 				// Top block
-				DrawRectangle(blocks[i].rect.x, blocks[i].rect.y + 4, blocks[i].rect.width, blocks[i].rect.height, (Color) { 0, 0, 0, 100 });
+				DrawRectangle(blocks[i].rect.x, blocks[i].rect.y + shadowOffset, blocks[i].rect.width, blocks[i].rect.height, shadowColor);
 			}
 			else if (blocks[i].rect.y + blocks[i].rect.height >= SCREEN_HEIGHT)
 			{
 				// Bottom block
-				DrawRectangle(blocks[i].rect.x, blocks[i].rect.y - 4, blocks[i].rect.width, blocks[i].rect.height, (Color) { 0, 0, 0, 100 });
+				DrawRectangle(blocks[i].rect.x, blocks[i].rect.y - shadowOffset, blocks[i].rect.width, blocks[i].rect.height, shadowColor);
 			}
 			else
 			{
 				// Floating block
-				DrawRectangle(blocks[i].rect.x + 4, blocks[i].rect.y + 4, blocks[i].rect.width, blocks[i].rect.height, (Color) { 0, 0, 0, 100 });
+				DrawRectangle(blocks[i].rect.x + shadowOffset, blocks[i].rect.y + shadowOffset, blocks[i].rect.width, blocks[i].rect.height, shadowColor);
 			}
 		}
 	}

@@ -1,9 +1,11 @@
+#include "assets/Fonts.h"
 #include "Cave.h"
 #include "Constants.h"
 #include "Game.h"
 #include "Lerp.h"
 #include "Particles.h"
 #include "Player.h"
+#include "Text.h"
 #include "Textures.h"
 #include "utils/Timer.h"
 #include "Vector.h"
@@ -28,6 +30,12 @@ int score = 0;
 int xOffset = 0;
 
 Timer smokeTimer;
+
+TextAnimation crashAnimation = { false, { SCREEN_WIDTH / 2, -50 }, { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 }, 0.5f, 0.0f };
+
+// Foward declarations
+int loadHighscore();
+void saveHighscore(int score);
 
 static void clampVelocity(Vector* speed)
 {
@@ -54,6 +62,8 @@ static void resetGame()
 	crashed = false;
 	score = 0;
 	smokeTimer = timerCreate(0.1f);
+
+	crashAnimation.active = false;
 	levelReset();
 	particlesReset();
 
@@ -78,7 +88,7 @@ void gameInitialize()
 
 static void updateSmoke(Particle* particle, float age)
 {
-	particle->zoom = lerp(age, 0.5f, 2.0f);
+	particle->zoom = lerp(age, 1.0f, 3.0f);
 	particle->alpha = lerp(age, 1.0f, 0.0f);
 }
 
@@ -93,11 +103,18 @@ void gameUpdate(float frameTime)
 		return;
 	}
 
+	particlesUpdate(frameTime);
+
 	if (crashed)
 	{
-		if (GetTime() - crashTime > 2)
+		if (timerUpdate(&smokeTimer))
+		{
+			particleCreate(vectorAdd(player.position, (Vector) { playerSize.width / 2, playerSize.height / 2 }), (Vector) { random(-5, 5), -30 }, (Vector) { 0, 0 }, 5000, & updateSmoke);
+		}
+		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 		{
 			resetGame();
+			started = true;
 		}
 		return;
 	}
@@ -109,6 +126,9 @@ void gameUpdate(float frameTime)
 
 	if (levelCollides(playerRect))
 	{
+		crashAnimation.active = true;
+		crashAnimation.start = GetTime();
+
 		crashed = true;
 		crashTime = GetTime();
 	}
@@ -134,14 +154,14 @@ void gameUpdate(float frameTime)
 
 	clampVelocity(&player.speed);
 	levelUpdate(xOffset);
-	particlesUpdate(frameTime);
+
 
 	score = getScore();
 }
 
 static void renderHelicopter()
 {
-	int offset = ((int)(GetTime() * 1000.0f) / 50) % 3;
+	int offset = crashed ? 0 : ((int)(GetTime() * 1000.0f) / 50) % 3;
 	Rectangle source = { offset * playerSize.width, 0, playerSize.width, playerSize.height };
 	Rectangle target = { (int)player.position.x , (int)player.position.y , playerSize.width, playerSize.height };
 
@@ -170,13 +190,33 @@ void gameRender()
 	renderHelicopter();
 	particlesRender();
 
-
 	EndMode2D();
 
-	char buffer[100];
-	sprintf(buffer, "Score: %d", score);
+	renderDropText(&TEXT_YELLOW_LARGE, &crashAnimation, "CRASHED");
 
-	DrawText(buffer, 5, 5, 20, WHITE);
+	if (!started)
+	{
+		renderTextCenteredWiggle(&TEXT_YELLOW_LARGE, "CLICK TO FLY", (Vector2) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 });
+	}
+	else if (crashed)
+	{
+		//renderTextCenteredWiggle(&TEXT_YELLOW_LARGE, "CRASHED", (Vector2) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 });
+	}
+
+	char buffer[100];
+	sprintf(buffer, "%d", score);
+	renderTextCentered(&TEXT_ORANGE_MEDIUM, buffer, (Vector2) { SCREEN_WIDTH / 2, 25 });
 
 	EndDrawing();
+}
+
+int loadHighscore()
+{
+	//FILE* file = fopen("highscore.txt", "r");
+	return 0;
+}
+
+void saveHighscore(int score)
+{
+
 }
