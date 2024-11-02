@@ -5,6 +5,7 @@
 #include "Lerp.h"
 #include "Particles.h"
 #include "Player.h"
+#include "Screens.h"
 #include "Text.h"
 #include "Textures.h"
 #include "utils/Timer.h"
@@ -100,6 +101,12 @@ static void updateSmoke(Particle* particle, float age)
 
 void gameUpdate(float frameTime)
 {
+	if (IsKeyPressed(KEY_ESCAPE))
+	{
+		screenSwitch(SCREEN_MENU);
+		return;
+	}
+
 	if (!started)
 	{
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
