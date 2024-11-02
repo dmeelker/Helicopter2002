@@ -3,7 +3,7 @@ workspace "Helicopter2002"
    platforms { "Win64"}
 
 project "Helicopter2002"
-   kind "ConsoleApp"
+   
    language "C"
    cdialect  "C17"
    targetdir "bin/%{cfg.buildcfg}"
@@ -26,8 +26,11 @@ project "Helicopter2002"
    filter "configurations:Debug"
       defines { "DEBUG" }
       symbols "On"
+      kind "ConsoleApp"
 
    filter "configurations:Release"
       defines { "NDEBUG" }
       optimize "On"
       staticruntime "on"
+      kind "WindowedApp"
+      entrypoint "mainCRTStartup"
