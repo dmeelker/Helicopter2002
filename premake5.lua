@@ -1,23 +1,18 @@
-workspace "Game"
+workspace "Helicopter2002"
    configurations { "Debug", "Release" }
    platforms { "Win64"}
 
-project "Game"
+project "Helicopter2002"
    kind "ConsoleApp"
    language "C"
+   cdialect  "C17"
    targetdir "bin/%{cfg.buildcfg}"
 
    characterset ("Unicode")
    buildoptions { "/utf-8" }
-   -- architecture "x86_64"
 
-   -- includedirs { "vcpkg_installed/x64-windows/include" }
-   -- libdirs { "vcpkg_installed/x64-windows/lib" }
    links { "raylib" }
-
    files { "src/**.h", "src/**.c" }
-
-
 
    filter "platforms:Win64" 
       system "Windows"
@@ -35,3 +30,4 @@ project "Game"
    filter "configurations:Release"
       defines { "NDEBUG" }
       optimize "On"
+      staticruntime "on"
