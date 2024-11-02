@@ -19,6 +19,11 @@ int clamp(int value, int min, int max)
 	return value;
 }
 
+float minf(float x, float y)
+{
+	return x < y ? x : y;
+}
+
 float easeOutCubic(float x)
 {
 	return 1.0f - pow(1.0f - x, 3.0f);

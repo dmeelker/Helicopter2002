@@ -9,6 +9,7 @@
 #include "Textures.h"
 #include "utils/Timer.h"
 #include "Vector.h"
+#include <math.h>
 #include <raylib.h>
 #include <stdio.h>
 
@@ -27,11 +28,14 @@ bool started = false;
 bool crashed = false;
 float crashTime = 0.0f;
 int score = 0;
+int highscore = 0;
 int xOffset = 0;
 
 Timer smokeTimer;
 
-TextAnimation crashAnimation = { false, { SCREEN_WIDTH / 2, -50 }, { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 }, 0.5f, 0.0f };
+TextAnimation crashAnimation = { false, { -300, SCREEN_HEIGHT / 2 }, { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 }, 0.5f, 0.0f };
+float highscoreTime = 0;
+bool gotHighscore = false;
 
 // Foward declarations
 int loadHighscore();
@@ -62,6 +66,7 @@ static void resetGame()
 	crashed = false;
 	score = 0;
 	smokeTimer = timerCreate(0.1f);
+	gotHighscore = false;
 
 	crashAnimation.active = false;
 	levelReset();
@@ -83,6 +88,7 @@ void gameInitialize()
 	camera.zoom = 1.0f;
 	camera.rotation = 0.0f;
 
+	highscore = 0; // loadHighscore();
 	resetGame();
 }
 
@@ -129,6 +135,12 @@ void gameUpdate(float frameTime)
 		crashAnimation.active = true;
 		crashAnimation.start = GetTime();
 
+		if (score > highscore)
+		{
+			highscore = score;
+			saveHighscore(highscore);
+		}
+
 		crashed = true;
 		crashTime = GetTime();
 	}
@@ -157,6 +169,12 @@ void gameUpdate(float frameTime)
 
 
 	score = getScore();
+
+	if (highscore > 0 && score > highscore && !gotHighscore)
+	{
+		gotHighscore = true;
+		highscoreTime = GetTime();
+	}
 }
 
 static void renderHelicopter()
@@ -192,18 +210,63 @@ void gameRender()
 
 	EndMode2D();
 
-	renderDropText(&TEXT_YELLOW_LARGE, &crashAnimation, "CRASHED");
-
 	if (!started)
 	{
 		renderTextCenteredWiggle(&TEXT_YELLOW_LARGE, "CLICK TO FLY", (Vector2) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 });
 	}
 	else if (crashed)
 	{
-		//renderTextCenteredWiggle(&TEXT_YELLOW_LARGE, "CRASHED", (Vector2) { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 });
+		float timeSinceCrash = GetTime() - crashTime;
+		float progress = easeOutCubic(minf(timeSinceCrash / 0.5f, 1.0f));
+
+		Vector2 location = {
+			lerp(progress, -300, SCREEN_WIDTH / 2),
+			SCREEN_HEIGHT / 2 };
+
+		renderTextCenteredWiggle(&TEXT_YELLOW_LARGE, "CRASHED", location);
+
+		if (gotHighscore)
+		{
+			location = (Vector2){
+			lerp(progress, -300, SCREEN_WIDTH / 2),
+			(SCREEN_HEIGHT / 2) + 50 };
+
+			renderTextCenteredWiggle(&TEXT_YELLOW_MEDIUM, "NEW HIGH SCORE", location);
+		}
+	}
+
+	if (!crashed && gotHighscore)
+	{
+		float timeSinceHighscore = GetTime() - highscoreTime;
+
+		if (timeSinceHighscore < 1.0f)
+		{
+			float progress = easeOutCubic(timeSinceHighscore / 1.0f);
+			Vector2 location = {
+				lerp(progress, -300, SCREEN_WIDTH / 2),
+				SCREEN_HEIGHT / 2 };
+
+			renderTextCenteredWiggle(&TEXT_YELLOW_LARGE, "HIGH SCORE", location);
+		}
+		else if (timeSinceHighscore < 2.0f)
+		{
+			float progress = easeOutCubic((timeSinceHighscore - 1.0f) / 1.0f);
+			Vector2 location = {
+				lerp(progress, SCREEN_WIDTH / 2, SCREEN_WIDTH + 300),
+				SCREEN_HEIGHT / 2 };
+
+			renderTextCenteredWiggle(&TEXT_YELLOW_LARGE, "HIGH SCORE", location);
+		}
 	}
 
 	char buffer[100];
+
+	if (highscore > 0)
+	{
+		sprintf(buffer, "%d", highscore);
+		renderTextCentered(&TEXT_ORANGE_SMALL, buffer, (Vector2) { SCREEN_WIDTH / 2, 60 });
+	}
+
 	sprintf(buffer, "%d", score);
 	renderTextCentered(&TEXT_ORANGE_MEDIUM, buffer, (Vector2) { SCREEN_WIDTH / 2, 25 });
 
@@ -212,11 +275,31 @@ void gameRender()
 
 int loadHighscore()
 {
-	//FILE* file = fopen("highscore.txt", "r");
-	return 0;
+	FILE* file = fopen("highscore.txt", "r");
+	if (file == NULL)
+	{
+		// If the file doesn't exist or can't be opened, return 0 as the default high score
+		return 0;
+	}
+
+	int highscore = 0;
+	fscanf(file, "%d", &highscore);
+	fclose(file);
+
+	return highscore;
 }
+
 
 void saveHighscore(int score)
 {
+	FILE* file = fopen("highscore.txt", "w");
+	if (file == NULL)
+	{
+		printf("Failed to save highscore\n");
+		return;
+	}
+
+	fprintf(file, "%d", score);
+	fclose(file);
 
 }

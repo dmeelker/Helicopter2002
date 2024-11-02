@@ -4,9 +4,12 @@
 #include <stdlib.h>
 
 #define TEXT_ORANGE { { 255, 162, 0, 255 }, { 121, 56, 0, 255 }}
+#define TEXT_DARK_ORANGE { { 195, 113, 0, 255 }, { 121, 56, 0, 255 }}
 #define TEXT_YELLOW { { 235, 211, 32, 255 }, { 138, 138, 0, 255 }}
 
+TextStyle TEXT_ORANGE_SMALL = { 12 * 2, 2, 1, TEXT_DARK_ORANGE };
 TextStyle TEXT_ORANGE_MEDIUM = { 12 * 4, 3, 3, TEXT_ORANGE };
+TextStyle TEXT_YELLOW_MEDIUM = { 12 * 4, 3, 3, TEXT_YELLOW };
 TextStyle TEXT_YELLOW_LARGE = { 12 * 6, 3, 4, TEXT_YELLOW };
 
 void renderText(const char* text, Vector2 position)

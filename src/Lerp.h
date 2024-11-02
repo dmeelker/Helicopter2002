@@ -13,6 +13,7 @@ typedef struct Size {
 float lerp(float value, float min, float max);
 int random(int min, int max);
 int clamp(int value, int min, int max);
+float minf(float x, float y);
 
 float easeOutCubic(float x);
 float easeOutBounce(float x);

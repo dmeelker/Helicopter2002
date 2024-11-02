@@ -25,6 +25,8 @@ typedef struct TextAnimation {
 } TextAnimation;
 
 extern TextStyle TEXT_ORANGE_MEDIUM;
+extern TextStyle TEXT_ORANGE_SMALL;
+extern TextStyle TEXT_YELLOW_MEDIUM;
 extern TextStyle TEXT_YELLOW_LARGE;
 
 void renderText(const char* text, Vector2 position);
