@@ -76,7 +76,7 @@ void levelRender()
 
 static void createNextOpening(int xOffset)
 {
-	static const int maxDifficultyDistance = 100000;
+	static const int maxDifficultyDistance = 50000;
 	previousOpening = nextOpening;
 
 	while (true)
