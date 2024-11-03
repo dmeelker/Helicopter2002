@@ -16,11 +16,11 @@
 #include <raylib.h>
 #include <stdio.h>
 
-#define MAX_SPEED 8
+#define MAX_SPEED 500
 
 const Size playerSize = { 70, 35 };
-const Vector gravity = { 0, 20.0f };
-const Vector liftSpeed = { 0, -42.0f };
+const Vector gravity = { 0, 1200.0f };
+const Vector liftSpeed = { 0, -2560.0f };
 
 Player player = { .position = { 600, 300 }, .speed = { 0, 0 } };
 bool accelerating = false;
@@ -136,7 +136,7 @@ void gameUpdate(float frameTime)
 		return;
 	}
 
-	player.position = vectorAdd(player.position, player.speed);
+	player.position = vectorAdd(player.position, vectorMultiply(player.speed, frameTime));
 	player.position.x += frameTime * 300.0; // 100.0
 
 	Rect playerRect = { player.position.x, player.position.y, playerSize.width, playerSize.height };
@@ -306,7 +306,7 @@ void gameRender()
 
 	sprintf(buffer, "%d", score);
 	renderTextCentered(&TEXT_ORANGE_MEDIUM, buffer, (Vector2) { SCREEN_WIDTH / 2, 25 });
-
+	DrawFPS(10, 10);
 	EndDrawing();
 }
 
