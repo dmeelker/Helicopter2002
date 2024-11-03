@@ -7,6 +7,7 @@
 #include "Particles.h"
 #include "Player.h"
 #include "Screens.h"
+#include "Settings.h"
 #include "Text.h"
 #include "Textures.h"
 #include "utils/Timer.h"
@@ -153,8 +154,12 @@ void gameUpdate(float frameTime)
 
 		crashed = true;
 		crashTime = GetTime();
-		StopSound(audio.heli);
-		PlaySound(audio.crash);
+
+		if (settings.enableSound)
+		{
+			StopSound(audio.heli);
+			PlaySound(audio.crash);
+		}
 	}
 
 	updateCameraLocation();
@@ -166,7 +171,11 @@ void gameUpdate(float frameTime)
 		if (!accelerating)
 		{
 			accelerateStartTime = GetTime();
-			PlaySound(audio.heli);
+
+			if (settings.enableSound)
+			{
+				PlaySound(audio.heli);
+			}
 		}
 
 		float blendProgress = minf((GetTime() - accelerateStartTime) / 0.2f, 1.0f);

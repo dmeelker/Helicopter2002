@@ -2,6 +2,7 @@
 #include "assets/Fonts.h"
 #include "Constants.h"
 #include "Screens.h"
+#include "Settings.h"
 #include "Textures.h";
 #include <raylib.h>
 
@@ -16,9 +17,14 @@ int main(void)
 	texturesLoad();
 	fontsLoad();
 	audioLoad();
+	settingsLoad();
 
 	SetMusicVolume(audio.music, 0.6f);
-	PlayMusicStream(audio.music);
+
+	if (settings.enableSound)
+	{
+		PlayMusicStream(audio.music);
+	}
 	screenSwitch(SCREEN_MENU);
 
 	while (!WindowShouldClose())

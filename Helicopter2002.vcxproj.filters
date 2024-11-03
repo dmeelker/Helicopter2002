@@ -30,6 +30,7 @@
     <ClInclude Include="src\assets\Audio.h">
       <Filter>assets</Filter>
     </ClInclude>
+    <ClInclude Include="src\Settings.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Cave.c" />
@@ -52,5 +53,6 @@
     <ClCompile Include="src\assets\Audio.c">
       <Filter>assets</Filter>
     </ClCompile>
+    <ClCompile Include="src\Settings.c" />
   </ItemGroup>
 </Project>

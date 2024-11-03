@@ -114,6 +114,7 @@
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="src\Rect.h" />
     <ClInclude Include="src\Screens.h" />
+    <ClInclude Include="src\Settings.h" />
     <ClInclude Include="src\Text.h" />
     <ClInclude Include="src\Textures.h" />
     <ClInclude Include="src\Vector.h" />
@@ -129,6 +130,7 @@
     <ClCompile Include="src\Particles.c" />
     <ClCompile Include="src\Rect.c" />
     <ClCompile Include="src\Screens.c" />
+    <ClCompile Include="src\Settings.c" />
     <ClCompile Include="src\Text.c" />
     <ClCompile Include="src\Textures.c" />
     <ClCompile Include="src\Vector.c" />
