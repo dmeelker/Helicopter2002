@@ -27,6 +27,9 @@
     <ClInclude Include="src\utils\Timer.h">
       <Filter>utils</Filter>
     </ClInclude>
+    <ClInclude Include="src\assets\Audio.h">
+      <Filter>assets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Cave.c" />
@@ -45,6 +48,9 @@
     <ClCompile Include="src\main.c" />
     <ClCompile Include="src\utils\Timer.c">
       <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="src\assets\Audio.c">
+      <Filter>assets</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -1,3 +1,4 @@
+#include "assets/Audio.h"
 #include "assets/Fonts.h"
 #include "Cave.h"
 #include "Constants.h"
@@ -22,6 +23,8 @@ const Vector liftSpeed = { 0, -42.0f };
 
 Player player = { .position = { 600, 300 }, .speed = { 0, 0 } };
 bool accelerating = false;
+float accelerateStartTime = 0;
+float accelerateEndTime = 0;
 
 Camera2D camera;
 
@@ -150,6 +153,8 @@ void gameUpdate(float frameTime)
 
 		crashed = true;
 		crashTime = GetTime();
+		StopSound(audio.heli);
+		PlaySound(audio.crash);
 	}
 
 	updateCameraLocation();
@@ -158,11 +163,27 @@ void gameUpdate(float frameTime)
 
 	if (IsMouseButtonDown(0))
 	{
+		if (!accelerating)
+		{
+			accelerateStartTime = GetTime();
+			PlaySound(audio.heli);
+		}
+
+		float blendProgress = minf((GetTime() - accelerateStartTime) / 0.2f, 1.0f);
+		SetSoundVolume(audio.heli, blendProgress);
+
 		player.speed = vectorAdd(player.speed, vectorMultiply(liftSpeed, frameTime));
 		accelerating = true;
 	}
 	else
 	{
+		if (accelerating)
+		{
+			accelerateEndTime = GetTime();
+		}
+
+		float blendProgress = minf((GetTime() - accelerateEndTime) / 0.2f, 1.0f);
+		SetSoundVolume(audio.heli, 1.0f - blendProgress);
 		accelerating = false;
 	}
 
