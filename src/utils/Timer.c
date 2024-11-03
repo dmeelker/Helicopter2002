@@ -3,12 +3,12 @@
 
 Timer timerCreate(float interval)
 {
-	return (Timer) { GetTime(), interval };
+	return (Timer) { (float)GetTime(), interval };
 }
 
 bool timerUpdate(Timer* timer)
 {
-	float time = GetTime();
+	float time = (float)GetTime();
 	if (time - timer->lastTriggerTime >= timer->interval)
 	{
 		timer->lastTriggerTime = time;

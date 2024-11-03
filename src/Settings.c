@@ -1,5 +1,6 @@
 #include "Settings.h"
 #include <stdio.h>
+#include <string.h>
 
 Settings settings = { .enableSound = true };
 

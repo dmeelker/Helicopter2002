@@ -16,43 +16,21 @@ TextStyle TEXT_YELLOW_LARGE = { 12 * 6, 3, 4, TEXT_YELLOW };
 
 void renderText(TextStyle* style, const char* text, Vector2 location)
 {
-	DrawTextEx(fonts.large, text, (Vector2) { location.x + style->shadowOffset, location.y + style->shadowOffset }, style->size, style->spacing, style->colors.shadow);
-	DrawTextEx(fonts.large, text, location, style->size, style->spacing, style->colors.text);
+	DrawTextEx(fonts.large, text, (Vector2) { location.x + style->shadowOffset, location.y + style->shadowOffset }, (float)style->size, (float)style->spacing, style->colors.shadow);
+	DrawTextEx(fonts.large, text, location, (float)style->size, (float)style->spacing, style->colors.text);
 }
 
 void renderTextCentered(TextStyle* style, const char* text, Vector2 center)
 {
-	Vector2 size = MeasureTextEx(fonts.large, text, style->size, style->spacing);
+	Vector2 size = MeasureTextEx(fonts.large, text, (float)style->size, (float)style->spacing);
 	Vector2 location = { center.x - (size.x / 2), center.y - (size.y / 2) };
 
-	DrawTextEx(fonts.large, text, (Vector2) { location.x + style->shadowOffset, location.y + style->shadowOffset }, style->size, style->spacing, style->colors.shadow);
-	DrawTextEx(fonts.large, text, location, style->size, style->spacing, style->colors.text);
+	DrawTextEx(fonts.large, text, (Vector2) { location.x + style->shadowOffset, location.y + style->shadowOffset }, (float)style->size, (float)style->spacing, style->colors.shadow);
+	DrawTextEx(fonts.large, text, location, (float)style->size, (float)style->spacing, style->colors.text);
 }
 
 void renderTextCenteredWiggle(TextStyle* style, const char* text, Vector2 center)
 {
 	Vector2 location = { center.x + (rand() % 2) - 1, center.y + (rand() % 2) - 1 };
 	renderTextCentered(style, text, wiggle(location));
-}
-
-void renderDropText(TextStyle* style, TextAnimation* animation, const char* text)
-{
-	if (!animation->active)
-	{
-		return;
-	}
-
-	float progress = (GetTime() - animation->start) / animation->duration;
-	if (progress >= 1.0f)
-	{
-		progress = 1.0f;
-	}
-
-	progress = easeOutCubic(progress);
-
-	Vector2 location = {
-		lerp(progress, animation->startPosition.x, animation->endPosition.x),
-		lerp(progress, animation->startPosition.y, animation->endPosition.y) };
-
-	renderTextCenteredWiggle(style, text, location);
 }

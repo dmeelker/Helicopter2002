@@ -1,9 +1,9 @@
-#include "assets/Audio.h";
+#include "assets/Audio.h"
 #include "assets/Fonts.h"
 #include "Constants.h"
 #include "Screens.h"
 #include "Settings.h"
-#include "Textures.h";
+#include "Textures.h"
 #include <raylib.h>
 
 int main(void)

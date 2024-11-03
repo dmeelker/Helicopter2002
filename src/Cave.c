@@ -49,17 +49,17 @@ void levelRender()
 			if (blocks[i].rect.y == 0)
 			{
 				// Top block
-				DrawRectangle(blocks[i].rect.x, blocks[i].rect.y + shadowOffset, blocks[i].rect.width, blocks[i].rect.height, shadowColor);
+				DrawRectangle((int)blocks[i].rect.x, (int)blocks[i].rect.y + shadowOffset, (int)blocks[i].rect.width, (int)blocks[i].rect.height, shadowColor);
 			}
 			else if (blocks[i].rect.y + blocks[i].rect.height >= SCREEN_HEIGHT)
 			{
 				// Bottom block
-				DrawRectangle(blocks[i].rect.x, blocks[i].rect.y - shadowOffset, blocks[i].rect.width, blocks[i].rect.height, shadowColor);
+				DrawRectangle((int)blocks[i].rect.x, (int)blocks[i].rect.y - shadowOffset, (int)blocks[i].rect.width, (int)blocks[i].rect.height, shadowColor);
 			}
 			else
 			{
 				// Floating block
-				DrawRectangle(blocks[i].rect.x + shadowOffset, blocks[i].rect.y + shadowOffset, blocks[i].rect.width, blocks[i].rect.height, shadowColor);
+				DrawRectangle((int)blocks[i].rect.x + shadowOffset, (int)blocks[i].rect.y + shadowOffset, (int)blocks[i].rect.width, (int)blocks[i].rect.height, shadowColor);
 			}
 		}
 	}
@@ -69,7 +69,7 @@ void levelRender()
 	{
 		if (blocks[i].used)
 		{
-			DrawRectangle(blocks[i].rect.x, blocks[i].rect.y, blocks[i].rect.width, blocks[i].rect.height, (Color) { 65, 146, 195, 255 });
+			DrawRectangle((int)blocks[i].rect.x, (int)blocks[i].rect.y, (int)blocks[i].rect.width, (int)blocks[i].rect.height, (Color) { 65, 146, 195, 255 });
 		}
 	}
 }
@@ -83,16 +83,16 @@ static void createNextOpening(int xOffset)
 	{
 		float difficultyFactor = clamp(xOffset, 0, maxDifficultyDistance) / (float)maxDifficultyDistance;
 
-		int minLength = lerp(difficultyFactor, 15, 5);
-		int maxLength = lerp(difficultyFactor, 20, 8);
+		int minLength = (int)lerp(difficultyFactor, 15, 5);
+		int maxLength = (int)lerp(difficultyFactor, 20, 8);
 		int sectionLength = random(minLength, maxLength) * BLOCK_WIDTH;
 
-		int minHeight = lerp(difficultyFactor, 400, OBSTACLE_HEIGHT + MIN_GAP_SIZE + 20);
-		int maxHeight = lerp(difficultyFactor, 500, 400);
+		int minHeight = (int)lerp(difficultyFactor, 400, OBSTACLE_HEIGHT + MIN_GAP_SIZE + 20);
+		int maxHeight = (int)lerp(difficultyFactor, 500, 400);
 		int nextHeight = random(minHeight, maxHeight);
 
-		int minYOffset = lerp(difficultyFactor, -100, -200);
-		int maxYOffset = lerp(difficultyFactor, 100, 200);
+		int minYOffset = (int)lerp(difficultyFactor, -100, -200);
+		int maxYOffset = (int)lerp(difficultyFactor, 100, 200);
 		int y = clamp(previousOpening.y + random(minYOffset, maxYOffset), 50, SCREEN_HEIGHT - 50 - nextHeight);
 
 		if (abs(y - previousOpening.y) < 50 || abs((y + nextHeight) - (previousOpening.y + previousOpening.height)) < 50)
@@ -119,11 +119,11 @@ static void generateBlocksToNextOpening()
 	{
 		float progress = step / (float)length;
 
-		int height = lerp(progress, previousOpening.height, nextOpening.height);
-		int y = lerp(progress, previousOpening.y, nextOpening.y);
+		int height = (int)lerp(progress, (float)previousOpening.height, (float)nextOpening.height);
+		int y = (int)lerp(progress, (float)previousOpening.y, (float)nextOpening.y);
 
-		Rect topBlock = { x, 0, BLOCK_WIDTH, y };
-		Rect bottomBlock = { x, y + height, BLOCK_WIDTH, SCREEN_HEIGHT - y - height };
+		Rect topBlock = { (float)x, 0, BLOCK_WIDTH, (float)y };
+		Rect bottomBlock = { (float)x, (float)y + height, BLOCK_WIDTH, (float)SCREEN_HEIGHT - y - height };
 		allocateBlock(topBlock);
 		allocateBlock(bottomBlock);
 
@@ -138,7 +138,7 @@ static void generateBlocksToNextOpening()
 
 				if (largestGap >= MIN_GAP_SIZE)
 				{
-					allocateBlock((Rect) { x, obstacleY, BLOCK_WIDTH, OBSTACLE_HEIGHT });
+					allocateBlock((Rect) { (float)x, (float)obstacleY, BLOCK_WIDTH, OBSTACLE_HEIGHT });
 					lastObstacleX = x;
 					break;
 				}

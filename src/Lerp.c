@@ -24,32 +24,14 @@ float minf(float x, float y)
 	return x < y ? x : y;
 }
 
-float easeOutCubic(float x)
+double mind(double x, double y)
 {
-	return 1.0f - pow(1.0f - x, 3.0f);
+	return x < y ? x : y;
 }
 
-float easeOutBounce(float x)
+float easeOutCubic(float x)
 {
-	const n1 = 7.5625;
-	const d1 = 2.75;
-
-	if (x < 1 / d1)
-	{
-		return n1 * x * x;
-	}
-	else if (x < 2 / d1)
-	{
-		return n1 * (x -= 1.5 / d1) * x + 0.75;
-	}
-	else if (x < 2.5 / d1)
-	{
-		return n1 * (x -= 2.25 / d1) * x + 0.9375;
-	}
-	else
-	{
-		return n1 * (x -= 2.625 / d1) * x + 0.984375;
-	}
+	return 1.0f - (float)pow(1.0f - x, 3.0f);
 }
 
 Vector2 wiggle(Vector2 vector)

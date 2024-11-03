@@ -24,22 +24,21 @@ const Vector liftSpeed = { 0, -2560.0f };
 
 Player player = { .position = { 600, 300 }, .speed = { 0, 0 } };
 bool accelerating = false;
-float accelerateStartTime = 0;
-float accelerateEndTime = 0;
+double accelerateStartTime = 0;
+double accelerateEndTime = 0;
 
 Camera2D camera;
 
 bool started = false;
 bool crashed = false;
-float crashTime = 0.0f;
+double crashTime = 0.0f;
 int score = 0;
 int highscore = 0;
 int xOffset = 0;
 
 Timer smokeTimer;
 
-TextAnimation crashAnimation = { false, { -300, SCREEN_HEIGHT / 2 }, { SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 }, 0.5f, 0.0f };
-float highscoreTime = 0;
+double highscoreTime = 0;
 bool gotHighscore = false;
 
 // Foward declarations
@@ -61,7 +60,7 @@ static void clampVelocity(Vector* speed)
 static void updateCameraLocation()
 {
 	camera.target.x = player.position.x + 200;
-	xOffset = player.position.x - 200;
+	xOffset = (int)player.position.x - 200;
 }
 
 static void resetGame()
@@ -73,17 +72,16 @@ static void resetGame()
 	smokeTimer = timerCreate(0.1f);
 	gotHighscore = false;
 
-	crashAnimation.active = false;
 	levelReset();
 	particlesReset();
 
-	player = (Player){ { 300, CENTER(SCREEN_HEIGHT, playerSize.height)}, {0, 0} };
+	player = (Player){ { 300, (float)CENTER(SCREEN_HEIGHT, playerSize.height)}, {0, 0} };
 	updateCameraLocation();
 }
 
 static int getScore()
 {
-	return (player.position.x - 10) / 10;
+	return (int)((player.position.x - 10.0f) / 10.0f);
 }
 
 void gameInitialize()
@@ -126,7 +124,7 @@ void gameUpdate(float frameTime)
 	{
 		if (timerUpdate(&smokeTimer))
 		{
-			particleCreate(vectorAdd(player.position, (Vector) { playerSize.width / 2, playerSize.height / 2 }), (Vector) { random(-5, 5), -30 }, (Vector) { 0, 0 }, 5000, & updateSmoke);
+			particleCreate(vectorAdd(player.position, (Vector) { playerSize.width / 2.0f, playerSize.height / 2.0f }), (Vector) { (float)random(-5, 5), -30 }, (Vector) { 0, 0 }, 5000, & updateSmoke);
 		}
 		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
 		{
@@ -137,15 +135,12 @@ void gameUpdate(float frameTime)
 	}
 
 	player.position = vectorAdd(player.position, vectorMultiply(player.speed, frameTime));
-	player.position.x += frameTime * 300.0; // 100.0
+	player.position.x += frameTime * 300.0f;
 
-	Rect playerRect = { player.position.x, player.position.y, playerSize.width, playerSize.height };
+	Rect playerRect = { player.position.x, player.position.y, (float)playerSize.width, (float)playerSize.height };
 
 	if (levelCollides(playerRect))
 	{
-		crashAnimation.active = true;
-		crashAnimation.start = GetTime();
-
 		if (score > highscore)
 		{
 			highscore = score;
@@ -178,7 +173,7 @@ void gameUpdate(float frameTime)
 			}
 		}
 
-		float blendProgress = minf((GetTime() - accelerateStartTime) / 0.2f, 1.0f);
+		float blendProgress = (float)mind((GetTime() - accelerateStartTime) / 0.2f, 1.0f);
 		SetSoundVolume(audio.heli, blendProgress);
 
 		player.speed = vectorAdd(player.speed, vectorMultiply(liftSpeed, frameTime));
@@ -191,7 +186,7 @@ void gameUpdate(float frameTime)
 			accelerateEndTime = GetTime();
 		}
 
-		float blendProgress = minf((GetTime() - accelerateEndTime) / 0.2f, 1.0f);
+		float blendProgress = (float)mind((GetTime() - accelerateEndTime) / 0.2f, 1.0f);
 		SetSoundVolume(audio.heli, 1.0f - blendProgress);
 		accelerating = false;
 	}
@@ -217,8 +212,8 @@ void gameUpdate(float frameTime)
 static void renderHelicopter()
 {
 	int offset = crashed ? 0 : ((int)(GetTime() * 1000.0f) / 50) % 3;
-	Rectangle source = { offset * playerSize.width, 0, playerSize.width, playerSize.height };
-	Rectangle target = { (int)player.position.x , (int)player.position.y , playerSize.width, playerSize.height };
+	Rectangle source = { (float)offset * playerSize.width, 0, (float)playerSize.width, (float)playerSize.height };
+	Rectangle target = { (float)(int)player.position.x , (float)(int)player.position.y , (float)playerSize.width, (float)playerSize.height };
 
 	float rotation = accelerating ? 5.f : 0.f;
 
@@ -229,7 +224,7 @@ static void renderHelicopter()
 
 	DrawTexturePro(textures.helicopter, source, target, (Vector2)
 	{
-		(playerSize.width / 2), (playerSize.height / 2)
+		(playerSize.width / 2.0f), (playerSize.height / 2.0f)
 	}, rotation, WHITE);
 }
 
@@ -253,7 +248,7 @@ void gameRender()
 	}
 	else if (crashed)
 	{
-		float timeSinceCrash = GetTime() - crashTime;
+		float timeSinceCrash = (float)GetTime() - (float)crashTime;
 		float progress = easeOutCubic(minf(timeSinceCrash / 0.5f, 1.0f));
 
 		Vector2 location = {
@@ -274,7 +269,7 @@ void gameRender()
 
 	if (!crashed && gotHighscore)
 	{
-		float timeSinceHighscore = GetTime() - highscoreTime;
+		float timeSinceHighscore = (float)GetTime() - (float)highscoreTime;
 
 		if (timeSinceHighscore < 1.0f)
 		{
@@ -300,11 +295,11 @@ void gameRender()
 
 	if (highscore > 0)
 	{
-		sprintf(buffer, "%d", highscore);
+		sprintf_s(buffer, 100, "%d", highscore);
 		renderTextCentered(&TEXT_ORANGE_SMALL, buffer, (Vector2) { SCREEN_WIDTH / 2, 60 });
 	}
 
-	sprintf(buffer, "%d", score);
+	sprintf_s(buffer, 100, "%d", score);
 	renderTextCentered(&TEXT_ORANGE_MEDIUM, buffer, (Vector2) { SCREEN_WIDTH / 2, 25 });
 	DrawFPS(10, 10);
 	EndDrawing();
