@@ -301,7 +301,6 @@ void gameRender()
 
 	sprintf_s(buffer, 100, "%d", score);
 	renderTextCentered(&TEXT_ORANGE_MEDIUM, buffer, (Vector2) { SCREEN_WIDTH / 2, 25 });
-	DrawFPS(10, 10);
 	EndDrawing();
 }
 
