@@ -16,8 +16,7 @@ jobs:
           ls ${{ github.workspace }}
       - run: echo "🍏 This job's status is ${{ job.status }}."
       - name: Run premake '5.0.0-beta1'
-        uses: eariassoto/setup-premake@v1
-        with:
-          action: 'gmake'
+        uses: abel0b/setup-premake@v2.4
+        run: premake5 gmake
       - name: Run make
         run: make build
